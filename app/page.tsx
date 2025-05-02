@@ -52,14 +52,10 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/doctors">
-                  <Button size="lg" className="w-full sm:w-auto">
-                    Find a Doctor
-                  </Button>
                 </Link>
                 <Link href="/auth/signup?type=doctor">
                   <Button
                     size="lg"
-                    variant="outline"
                     className="w-full sm:w-auto"
                   >
                     Join as a Doctor

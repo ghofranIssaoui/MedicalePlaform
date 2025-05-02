@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
 
   const { email, password } = await req.json();
 
-  // نمنع الادمين انه يعمل لوجين من هنا
   if (email === process.env.NEXT_PUBLIC_ADMIN_EMAIL) {
     return NextResponse.json({ message: "Vous ne pouvez pas utiliser cet email pour login standard." }, { status: 400 });
   }
@@ -27,7 +26,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Mot de passe incorrect" }, { status: 401 });
   }
 
-  // ديما نضمن نرجع role user إذا مافماش
   const role = existingUser.role || "user";
 
   const token = jwt.sign(
@@ -36,8 +34,7 @@ export async function POST(req: NextRequest) {
     { expiresIn: "1h" }
   );
 
-  // تحضير الرد مع الكوكي
-  const response = NextResponse.json({ message: "Connecté", role });
+  const response = NextResponse.json({ message: "Connecté", role , id: existingUser._id, email: existingUser.email, name: existingUser.name, phone: existingUser.phone, address: existingUser.address, image: existingUser.image }, { status: 200 });
 
   response.cookies.set({
     name: "access_token",

@@ -5,10 +5,12 @@ import mongoose, { Schema, models, model } from 'mongoose';
 const DoctorSchema = new Schema({
   name: String,
   specialty: String,
+  email:String,
   subSpecialty: String,
   location: String,
   rating: Number,
   reviews: Number,
+  license : String,
   image: String,
   about: String,
   education: [

@@ -35,11 +35,11 @@ export async function POST(req: Request) {
       password: hashedPassword,
     });
 
-    await newPatient.save();
+    const savedDoctor=await newPatient.save();
 
     return NextResponse.json(
       { message: "Compte créé avec succès" },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Erreur signup:", error);

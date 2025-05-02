@@ -2,7 +2,7 @@
 import { connectDB } from "@/lib/db";
 import { Doctor } from "@/models/doctor";
 import  Patient  from "@/models/client";
-import  Appointment  from "@/models/appoinments";
+import  Appointment  from "@/models/appointments";
 import { NextResponse } from "next/server";
 
 // جلب إحصائيات عامة للـ Dashboard

@@ -10,4 +10,5 @@ const appointmentSchema = new mongoose.Schema({
   meetingLink: { type: String }, // Zoom or Google Meet
 }, { timestamps: true });
 
-export default mongoose.models.Appointment || mongoose.model('Appointment', appointmentSchema);
+const Appointment = mongoose.models.Appointment || mongoose.model('Appointment', appointmentSchema);
+export default Appointment;

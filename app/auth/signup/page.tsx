@@ -37,6 +37,78 @@ export default function SignupPage() {
   const [specialty, setSpecialty] = useState("");
   const [license, setLicense] = useState("");
 
+const handleDoctorSignup = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (password !== confirmPassword) {
+    return toast.error("Passwords do not match!");
+  }
+
+  // Build the payload matching your DoctorSchema, with static demo data
+  const body = {
+    name: `${firstName}${lastName}`,
+    specialty,
+    subSpecialty: "General Practice",       // static default
+    location: "123 Wellness Blvd, Suite 100",
+    rating: 4.5,                             // example average
+    reviews: 27,
+    image: "/images/doctor-placeholder.jpg",
+    about:
+      "Dr. " +
+      `${lastName}` +
+      " is an experienced physician with over 10 years in practice, specializing in preventative care and patient education.",
+    education: [
+      {
+        degree: "MD",
+        institution: "Harvard Medical School",
+        year: "2012",
+      },
+      {
+        degree: "Residency in Internal Medicine",
+        institution: "Massachusetts General Hospital",
+        year: "2016",
+      },
+    ],
+    languages: ["English", "French"],
+    insurances: ["Blue Cross Blue Shield", "Aetna", "Cigna"],
+    availableDates: [
+      {
+        date: "2025-05-10",
+        slots: ["09:00", "09:30", "10:00", "10:30"],
+      },
+      {
+        date: "2025-05-11",
+        slots: ["11:00", "11:30", "12:00"],
+      },
+    ],
+    consultationFee: 150,
+    // still include these so your POST route can hash & store them
+    email,
+    password,
+    license,
+  };
+
+  console.log("doctor signup body:", body);
+
+  try {
+    const res = await fetch("/api/doctors", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      console.log("Signup successful:", data);
+      router.push("/auth/login");
+    } else {
+      console.error("Signup failed:", data.message);
+      toast.error(data.message || "Signup failed");
+    }
+  } catch (error: any) {
+    console.error("Error during signup:", error);
+    toast.error("Erreur réseau");
+  }
+};
+
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,6 +126,7 @@ export default function SignupPage() {
       password,
     };
 
+    console.log("signup body:", body);
     if (activeTab === "doctor") {
       body.specialty = specialty;
       body.license = license;
@@ -73,7 +146,8 @@ export default function SignupPage() {
       
 
       if (res.ok) {
-        router.push("/dashboard");
+        console.log("Signup successful:", data);
+        router.push("/login");
       } else {
         console.error("Signup failed:", data.message);
       }
@@ -160,7 +234,7 @@ export default function SignupPage() {
 
             {/* DOCTOR FORM */}
             <TabsContent value="doctor">
-              <form onSubmit={handleSignup} className="space-y-4 pt-4">
+              <form onSubmit={handleDoctorSignup} className="space-y-4 pt-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="doctor-first-name">First name</Label>
